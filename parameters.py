@@ -18,13 +18,13 @@ master_para = {
         {
             # ---------- CONTROL PARAMETERS: ---------- #
             "IS_SIMULATION": True,  # if False then we init Simulation_obj but do not execute .full_simulation()
-            "NUM_TRANSIENT_STEPS": 1000,#1000
+            "NUM_TRANSIENT_STEPS": 1000, #1000
             "NUM_RECORD_STEPS": 1000,
-            "NUM_PATCHES": 50,#100 takes too long if its 100+
+            "NUM_PATCHES": 1, #100 takes too long if its 100+
             # ----------------------------------------- #
 
             "MODEL_TIME_TYPE": "discrete",  # continuous ODEs ('continuous') or discrete maps ('discrete')?
-            "EULER_STEP": 0.1,  # ONLY used if continuous - solve ODEs by Euler method
+            "EULER_STEP": 0.0,  # ONLY used if continuous - solve ODEs by Euler method
             "STEPS_TO_DAYS": 1,  # be aware that this affects how often temporal functions are updated!
 
             "ECO_PRIORITIES": {0: {'foraging', 'direct_impact', 'growth','dispersal'}, 1: {}, 2: {}, 3: {}},
@@ -55,7 +55,7 @@ master_para = {
             "HABITAT_TYPES": {
                 # Key (indexing) must be non-negative integers without gaps. Value can be any given name.
                 0: 'habitat_type_0',
-                1: 'habitat_type_1',
+                #1: 'habitat_type_1',
             },
             "GENERATED_SPEC": {
                 #
@@ -70,16 +70,15 @@ master_para = {
                     # If used, this needs to have keys from 0, ...,  total_possible_habitats, indexing lists with
                     # length equal to the total possible number of scores (i.e. the number of species)
                     "HABITAT_SCORES": {0: [1.0], #[1.0, 1.0, 0.5]
-                                       1: [1.0], #[0.5, 1.0, 0.25]
+                                       # 1: [1.0], #[0.5, 1.0, 0.25]
                                        },
                 },
                 "TRAVERSAL": {
-                    "IS_SPECIES_SCORES_SPECIFIED": True,  # if false, then randomly generated from the uniform
-                    # distribution over [MIN_SCORE, MAX_SCORE] : personal note, this is for whether species can travel from one node to another.
+                    "IS_SPECIES_SCORES_SPECIFIED": True,  # if false, then randomly generated from the uniform                # distribution over [MIN_SCORE, MAX_SCORE] : personal note, this is for whether species can travel from one node to another.
                     "MIN_SCORE": None,
                     "MAX_SCORE": None,
                     "HABITAT_SCORES": {0: [1.0], #[1.0, 1.0, 1.0]
-                                       1: [1.0], #[1.0, 1.0, 1.0]
+                                       # 1: [1.0], #[1.0, 1.0, 1.0]
                                        },
                 },
             },
@@ -87,11 +86,11 @@ master_para = {
             # --- Initial choice of the above species and habitats that should actually be present at the start --- #
 
             # Now indicate which species from the "SPECIES_TYPES" keys that you want to be present at the beginning.
-            "INITIAL_SPECIES_SET": {0},  # each must exist as a key in the types dictionary, ordering not needed
+            "INITIAL_SPECIES_SET": {0}, #{0, 1} # each must exist as a key in the types dictionary, ordering not needed
 
             # each must be present in the types dictionary, ordering not needed
             # THIS ALSO NEEDS TO BE SET BEFORE SPATIAL HABITAT GENERATION!
-            "INITIAL_HABITAT_SET": {0, 1},
+            "INITIAL_HABITAT_SET": {0}, #{0, 1},
             # if the following is None then probabilities are treated as uniform when combined with auto-correlation
             "INITIAL_HABITAT_BASE_PROBABILITIES": None,  # this should be a vector of length equal the TOTAL set of
             # habitats - NOT just those included in the initial set (they should be assigned probability 0.0).
@@ -135,12 +134,12 @@ master_para = {
             "ADJACENCY_MANUAL_SPEC": None,  # should be None if we want to generate the patch adjacency matrix by
             # other means, and a list (length = num_patches) of lists (length = num_patches) if we want to use it.
 
-            "MINIMUM_CONNECTED_SUBGRAPH_SIZE": 50, # if >1, this connects clusters until the largest cluster is at
+            "MINIMUM_CONNECTED_SUBGRAPH_SIZE": 1, # if >1, this connects clusters until the largest cluster is at
             # least this large. If equal to num_patches, this ensures that the whole graph is connected, whilst
             # attempting to respect the relative positioning of patches in order to preserve the graph_type topology
             # as best possible.
 
-            "LATTICE_GRAPH_CONNECTIVITY": 0.5, # 0.0
+            "LATTICE_GRAPH_CONNECTIVITY": 1.0, # 0.0
             "IS_LATTICE_INCLUDE_DIAGONALS": False,
             "IS_LATTICE_WRAPPED": True,  # should only be used for GRAPH_TYPE 'lattice' and GRAPH_LAYOUT 'grid'.
             "RANDOM_GRAPH_CONNECTIVITY": None,
@@ -193,7 +192,7 @@ master_para = {
                 "PATCH_PROPERTY_NORMAL_SD": 0.1,
                 "HABITAT_NORMAL_DICT": {
                     0: {"mean": 0.5, "sd": 0.7},
-                    1: {"mean": 0.5, "sd": 0.7},
+                    #1: {"mean": 0.5, "sd": 0.7},
                 },
                 "CLIQUE_NORMAL_DICT": {},
                 "TREE_INITIAL_PATCH_VALUE": 0.0,
@@ -215,7 +214,7 @@ master_para = {
                 "PATCH_PROPERTY_NORMAL_SD": 0.0,
                 "HABITAT_NORMAL_DICT": {
                     0: {"mean": 0.5, "sd": 0.7},
-                    1: {"mean": 0.5, "sd": 0.7},
+                    #1: {"mean": 0.5, "sd": 0.7},
                 },
                 "CLIQUE_NORMAL_DICT": {},
                 "TREE_INITIAL_PATCH_VALUE": 0.0,
@@ -225,7 +224,7 @@ master_para = {
                 "GRADIENT_AXIS": "x+y",  # 'x' or 'y' or 'x+y'
             },
 
-            "IS_ENVIRONMENT_NATURAL_RESTORATION": True,  # is there a tendency to return to certain characteristics?
+            "IS_ENVIRONMENT_NATURAL_RESTORATION": False,  # is there a tendency to return to certain characteristics?
             "RESTORATION_PARA": {
                 "IS_QUALITY_CHANGE": True,
                 "QUALITY_CHANGE_PROBABILITY": 0.2,
@@ -292,14 +291,14 @@ master_para = {
     "pop_dyn_para":
         {
             "MU_OVERALL": 1.0,  # scales dispersal for all species and movements
-            "GENERAL_DISPERSAL_PENALTY": 0.1,  # in [0, 1], this sets a baseline fractional LOSS for all movement,
+            "GENERAL_DISPERSAL_PENALTY": 0.0,  # in [0, 1], this sets a baseline fractional LOSS for all movement,
             # and is overwritten ONLY if the species-specific cost is HIGHER.
             "COMPETITION_ALPHA_SCALING": 0.25,  # Sets relative strength [0 - 1] of inter-specific competition
             # to intra-specific competition for natural abiotic resources.
             "IS_LOCAL_FORAGING_ENSURED": False,  # if true, all feeding scores within-patch set to 1 (NOT m_i * h_i,k)
             #
             # These act like safety valves - overriding species-specific options if set to False to turn off such acts.
-            "IS_NONLOCAL_FORAGING_PERMITTED": True,
+            "IS_NONLOCAL_FORAGING_PERMITTED": False, # was True
             "IS_DISPERSAL_PERMITTED": True,
             "IS_PURE_DIRECT_IMPACT": False,  # allows custom ±c*x impact on a species for harvesting or culling etc.
             # Can be specified to occur on a periodic cycle, and the cycle can be offset on certain years or habitats.

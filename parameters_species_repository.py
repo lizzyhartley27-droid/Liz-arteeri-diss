@@ -6,7 +6,7 @@ import numpy as np
 default_species = {
     "CORE_PARA":  # can be None, and default values used (see Species.__init__()).
         {
-        "MINIMUM_POPULATION_SIZE": 1.0,
+        "MINIMUM_POPULATION_SIZE": 1.0, ################
         "LIFESPAN": 1,
         "PREDATOR_LIST": [],  # LEAVE BLANK - generated from predators' properties. Holds which species predate this.
         "SEASONAL_PERIOD": 0,  # used in the growth and direct impact offsets
@@ -29,7 +29,7 @@ default_species = {
             "GROWTH_FUNCTION": "logistic",
             "R": {
                 "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                "constant_value": 3.0, # 5.0
+                "constant_value": 3.0, # 5.0, not actually the r value, run within one patch
                 "period": None,
                 "amplitude": None,
                 "phase_shift": None,
@@ -185,7 +185,7 @@ default_species = {
             "DISPERSAL_MECHANISM": {
                 # CHOOSE FROM: 'step_poly', 'diffusion', 'stochastic_quantity', 'stochastic_binomial', 'adaptive'
                 "type": 'constant',  # {'constant', 'vector_exp', 'vector_imp'}
-                "constant_value": "step_poly",
+                "constant_value": "diffusion", ########
                 "period": None,
                 "vector_exp": None,  # [value_0, value_1, ..., value_period]
                 "vector_imp": None,  # { 0 : value_0, ... , lower_time_limit_N : value_N }
@@ -222,7 +222,7 @@ default_species = {
             # Thus, for about 10% emigration, we want dispersal_mobility * mu_overall = 0.2
             "DISPERSAL_MOBILITY": {
                 "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                "constant_value": 1.0,
+                "constant_value": 0.1, ####
                 "period": None,
                 "amplitude": None,
                 "phase_shift": None,
@@ -347,12 +347,12 @@ ARTEMIS_SAMPLE_MASTER = {
     "prey": {
         "CORE_PARA":{
             "MINIMUM_POPULATION_SIZE": 0.000001,
-            "LIFESPAN": 25,
+            "LIFESPAN": 1,
             "PREDATOR_LIST": [], #['predator']
             "SEASONAL_PERIOD": 0,
         },
         "INITIAL_POPULATION_PARA": {
-            "INITIAL_POPULATION_MECHANISM": "gaussian",  # patch vector
+            "INITIAL_POPULATION_MECHANISM": "gaussian",  # patch vector, ra
             "IS_ENSURE_MINIMUM_POPULATION": True, # false
             "CONSTANT_VALUE": None,
             "GAUSSIAN_MEAN": 0.1,
@@ -367,7 +367,7 @@ ARTEMIS_SAMPLE_MASTER = {
                 "GROWTH_FUNCTION": "logistic",
                 "R": {
                     "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                    "constant_value": 4.0,
+                    "constant_value": 6.0,
                     "period": None,
                     "amplitude": None,
                     "phase_shift": None,
@@ -461,7 +461,7 @@ ARTEMIS_SAMPLE_MASTER = {
                     "logistic_r": None,  # r-value of the logistic map to generate the time-series
                     "logistic_max": None,  # theoretical maximum value of this parameter, to re-scale all to [0, 1]
                 },
-                "IS_DISPERSAL_PATH_RESTRICTED": True,
+                "IS_DISPERSAL_PATH_RESTRICTED": False, # was true
                 "MAX_DISPERSAL_PATH_LENGTH": {
                     "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
                     "constant_value": 1,
