@@ -355,7 +355,7 @@ ARTEMIS_SAMPLE_MASTER = {
             "INITIAL_POPULATION_MECHANISM": "gaussian",  # patch vector, ra
             "IS_ENSURE_MINIMUM_POPULATION": True, # false
             "CONSTANT_VALUE": None,
-            "GAUSSIAN_MEAN": 0.1,
+            "GAUSSIAN_MEAN": 0.7,
             "GAUSSIAN_ST_DEV": 0.01,
             "BINOMIAL_MAXIMUM_MULTIPLIER": None,
             "BINOMIAL_PROBABILITY": None,
@@ -367,7 +367,7 @@ ARTEMIS_SAMPLE_MASTER = {
                 "GROWTH_FUNCTION": "logistic",
                 "R": {
                     "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                    "constant_value": 6.0,
+                    "constant_value": 5,
                     "period": None,
                     "amplitude": None,
                     "phase_shift": None,
@@ -435,7 +435,7 @@ ARTEMIS_SAMPLE_MASTER = {
                 "DISPERSAL_MOBILITY": {
                     # THIS IS REDUNDANT FOR STEP_POLY DISPERSAL IF CF_LISTS SCALED
                     "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                    "constant_value": 0.025,
+                    "constant_value": 0.025, # 0.025
                     "period": None,
                     "amplitude": None,
                     "phase_shift": None,

@@ -186,7 +186,7 @@ master_para = {
                 "PATCH_PROPERTY_RULE": "habitat_normal",  # 'manual', 'random_uniform', 'random_normal',
                     # 'habitat_normal', 'clique_normal', 'balanced_tree_self_similar', #'auto_correlation', 'gradient'
                 "PATCH_PROPERTY_MANUAL_SPEC": None,
-                "MIN_VALUE": 0.1,  # should not actually be set to 0, as a size=0 patch causes all kinds of errors
+                "MIN_VALUE": 1.0,  # should not actually be set to 0, as a size=0 patch causes all kinds of errors
                 "MAX_VALUE": 1.0,
                 "PATCH_PROPERTY_NORMAL_MEAN": 0.5,
                 "PATCH_PROPERTY_NORMAL_SD": 0.1,
@@ -208,7 +208,7 @@ master_para = {
                 "PATCH_PROPERTY_RULE": "habitat_normal",  # 'manual', 'random_uniform', #'random_normal',
                     # 'habitat_normal', 'clique_normal', 'balanced_tree_self_similar', 'auto_correlation', 'gradient'
                 "PATCH_PROPERTY_MANUAL_SPEC": None,
-                "MIN_VALUE": 0.1,  # should not actually be set to 0, as a quality=0 patch causes all kinds of errors
+                "MIN_VALUE": 1.0,  # should not actually be set to 0, as a quality=0 patch causes all kinds of errors
                 "MAX_VALUE": 1.0,
                 "PATCH_PROPERTY_NORMAL_MEAN": 0.7,
                 "PATCH_PROPERTY_NORMAL_SD": 0.0,
