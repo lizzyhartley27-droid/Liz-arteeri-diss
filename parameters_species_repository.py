@@ -367,7 +367,7 @@ ARTEMIS_SAMPLE_MASTER = {
                 "GROWTH_FUNCTION": "logistic",
                 "R": {
                     "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                    "constant_value": 5,
+                    "constant_value": 4.6,
                     "period": None,
                     "amplitude": None,
                     "phase_shift": None,
