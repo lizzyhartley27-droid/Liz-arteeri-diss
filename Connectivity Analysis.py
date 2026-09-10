@@ -66,3 +66,7 @@ else:
     print("\nConclusion: The population is Non-Stationary (exhibiting long-term upward or downward drift).")
 
 
+mean_population = df['Overall_Count'].tail(1000).mean()
+
+print("Mean population size over the last 1000 time steps:",
+      mean_population)
