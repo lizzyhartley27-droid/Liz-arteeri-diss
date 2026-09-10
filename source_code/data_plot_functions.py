@@ -7,7 +7,6 @@ from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.cm import ScalarMappable
 import os.path
 from copy import deepcopy
-from matplotlib.pyplot import xlabel, ylabel
 
 
 # ----------------------------------------------- FIGURE MANAGEMENT ----------------------------------------------- #
@@ -66,22 +65,8 @@ def create_patches_plot(patch_list, color_property, file_path, path_list=None, p
     fig, ax = plt.subplots()
     min_val = np.zeros([2])
     max_val = np.zeros([2])
-    if color_property is None:
-        color_values = None
-        min_color_value = 0.0
-        max_color_value = 1.0
-    else:
-        color_values = np.asarray(color_property, dtype=float)
-        if color_values.ndim == 0:
-            color_values = np.full(len(patch_list), float(color_values))
-        elif color_values.shape[0] == len(patch_list):
-            color_values = color_values.reshape(len(patch_list), -1)[:, 0]
-        elif color_values.size == len(patch_list):
-            color_values = color_values.reshape(len(patch_list))
-        else:
-            raise ValueError("color_property must contain one color value per patch.")
-        min_color_value = np.min(color_values)
-        max_color_value = np.max(color_values)
+    min_color_value = np.min(color_property)
+    max_color_value = np.max(color_property)
 
     # space them out slightly so that size=1 patches can still be distinguished
     patch_scaling_factor = 1.5
@@ -92,7 +77,7 @@ def create_patches_plot(patch_list, color_property, file_path, path_list=None, p
         is_one_color = True
     else:
         is_one_color = False
-        if max_color_value - min_color_value == 0.0:
+        if np.max(color_property) - np.min(color_property) == 0.0:
             is_one_color = True
         elif use_colors:
             color_offset = 0.15  # for cyclic color maps (e.g. hsv) [0] and [1] are the same, so need an offset
@@ -108,19 +93,22 @@ def create_patches_plot(patch_list, color_property, file_path, path_list=None, p
 
         if is_one_color:
             # only one entry
-            if color_values is None or max_color_value == 0.0:
+            if np.max(color_property) == 0.0:
                 max_color_value = 1.0
                 c = [0.0, 0.0, 0.0]
             else:
                 min_color_value = 0.0
                 c = [1.0, 1.0, 1.0]
         else:
-            color_fraction = (color_values[patch_num] - min_color_value) / (max_color_value - min_color_value)
             if use_colors:
                 color_map = cm.get_cmap('hsv')
-                c = color_map((1.0 - color_offset) * float(color_fraction) + color_offset)
+                c = color_map((1.0 - color_offset) * float((color_property[patch_num] - np.min(color_property)) /
+                                                           (np.max(color_property) - np.min(color_property)))
+                              + color_offset)
             else:
-                c = [(1.0 - color_offset) * float(color_fraction) + color_offset for _ in range(3)]
+                c = [(1.0 - color_offset) * float((color_property[patch_num] - np.min(color_property)) /
+                                                  (np.max(color_property) - np.min(color_property))) + color_offset
+                     for _ in range(3)]
 
         # check if coloring is max or min for possible color bar
         # if float(color_property[patch_num]) in [min_color_value, max_color_value]:
@@ -142,7 +130,7 @@ def create_patches_plot(patch_list, color_property, file_path, path_list=None, p
                     data_val = None
             else:
                 # label patches with the colour matrix unless an attribute specified
-                data_val = color_property[patch_num, 0]
+                data_val = color_property[patch_num]
             if data_val is not None:
                 # format the patch labels
                 if type(data_val) in [int, float]:
@@ -605,7 +593,7 @@ def patch_plot_with_local_time_series(patch_list, adjacency_path_list, species_s
 
 def plot_current_local_population_attribute(patch_list, sim_path, attribute_name, step, species,
                                             adjacency_path_list, sub_attr=None):
-    attribute_matrix = np.zeros([len(patch_list), 1])
+    attribute_matrix = np.zeros([len(patch_list)])
     for patch in patch_list:
         # locate the species
         for local_population in patch.local_populations.values():
@@ -613,7 +601,7 @@ def plot_current_local_population_attribute(patch_list, sim_path, attribute_name
                 value = getattr(local_population, attribute_name)
                 if sub_attr is not None:
                     value = value[sub_attr]
-                attribute_matrix[patch.number, 0] = value
+                attribute_matrix[patch.number] = value
                 break
     if sub_attr is not None:
         file_path = f"{sim_path}/{step}/figures/species_attributes/" \
@@ -777,17 +765,17 @@ def plot_network_properties(patch_list, sim_path, step, adjacency_path_list,
                 file_suffix = file_pre_suffix
             else:
                 file_suffix = file_pre_suffix + '_' + str(sub_attr)
-            color_matrix = np.zeros([len(patch_list), 1])
+            color_vector = np.zeros([len(patch_list)])
             for patch in patch_list:
                 if sub_attr is None:
                     patch_attribute = getattr(patch, properties[prop]["attribute_id"])
                     file_suffix = file_pre_suffix
                 else:
                     patch_attribute = getattr(patch, properties[prop]["attribute_id"])[sub_attr]
-                color_matrix[patch.number, 0] = patch_attribute
+                color_vector[patch.number] = patch_attribute
 
             file_path = f"{sim_path}/{step}/figures/network_properties/{prop}{file_suffix}.png"
-            create_patches_plot(patch_list=patch_list, color_property=color_matrix, file_path=file_path,
+            create_patches_plot(patch_list=patch_list, color_property=color_vector, file_path=file_path,
                                 use_color_bar=properties[prop]["use_color_bar"],
                                 label_patches=properties[prop]["label_patches"],
                                 patch_label_attr=properties[prop]["patch_label_attr"],
@@ -864,7 +852,7 @@ def plot_interactions(patch_list, adjacency_path_list, sim_path, step):
     habitat_matrix = np.zeros([len(patch_list), 1])
     for patch in patch_list:
         # What is the habitat type number?
-        habitat_matrix[patch.number, 0] = patch.habitat_type_num
+        habitat_matrix[patch.number] = patch.habitat_type_num
 
     for patch in patch_list:
         for local_pop in patch.local_populations.values():
@@ -905,7 +893,7 @@ def plot_interactions(patch_list, adjacency_path_list, sim_path, step):
                 if leaving_array[destination] != 0.0:
                     # this shows the ACTUAL final destinations, so no checks required
                     dispersal_path_list.append((patch.number, destination,
-                                                leaving_array[destination], [0.3, 0.3, 0.3]))
+                                                leaving_array[destination][0], [0.3, 0.3, 0.3]))
 
             path_lists = {
                 "prey": {
@@ -950,7 +938,7 @@ def plot_unrestricted_shortest_paths(patch_list, species_set, sim_path, step):
     # patch color is the degree of the patch
     habitat_matrix = np.zeros([len(patch_list), 1])
     for patch in patch_list:
-        habitat_matrix[patch.number, 0] = patch.degree
+        habitat_matrix[patch.number] = patch.degree
     for species in species_set["list"]:
         # generate list of [ (start, stop, annotation) ] tuples for paths between patches
         path_list = []
@@ -975,7 +963,7 @@ def plot_adjacency_sub_graphs(system_state, sim_path):
     # Iterate through the patches
     max_patches = len(system_state.patch_list)
     unclassified_patches = [x for x in range(max_patches)]
-    color_classification = -1 * np.ones(max_patches)
+    color_classification = -1 * np.ones([max_patches, 1])
     next_classifier = -1
     patch_adjacency_matrix = system_state.patch_adjacency_matrix
 
@@ -1014,8 +1002,8 @@ def plot_accessible_sub_graphs(patch_list, parameters, species, sim_path, step):
     # Iterate through the patches
     max_patches = parameters["main_para"]["NUM_PATCHES"]
     unclassified_patches = [x for x in range(max_patches)]
-    color_classification = -1 * np.ones(max_patches)
-    subgraph_size = np.zeros(max_patches)
+    color_classification = -1 * np.ones([max_patches, 1])
+    subgraph_size = np.zeros([max_patches, 1])
     next_classifier = -1
 
     while len(unclassified_patches) > 0:
@@ -1058,7 +1046,7 @@ def plot_accessible_sub_graphs(patch_list, parameters, species, sim_path, step):
                         file_path=file_path, use_colors=True, local_time_series = None)
 
 
-# ------------------------- PRODUCING DISTANCE, NETWORK, COMPLEXITY LINEAR REGRESSION PLOTS ------------------------- #
+# ------------------------- PRODUCING DISTANCE METRICS AND LINEAR REGRESSION PLOTS ------------------------- #
 
 def partition_spectrum_plotting(distance_metrics_store, sim_path, step):
     # Plots the spectrum of max and min possible complexity of delta-partitions
@@ -1069,160 +1057,73 @@ def partition_spectrum_plotting(distance_metrics_store, sim_path, step):
         # results found
         for path in list_of_key_paths:
             key_list = path.split("|")
-            type_target_dict = return_dict_from_address(key_list, distance_metrics_store)
-
-            type_info = {
-                "part_complexity":
-                    {"y_label": r"Partition value $P_{\delta}$",
-                     "legend": ["Supremum value over all partitions", "Mean value over all partitions"],
-                     "is_sup": True,
-                     "is_inf": False,
-                     },
-                "inter_ideal_complexity":
-                    {"y_label": r"Inter-cluster complexity of supremum-$P_{\delta}$ partition",
-                     "legend": ["Supremum over all clusters", "Mean complexity over all clusters",
-                                "Infimum complexity over all clusters"],
-                     "is_sup": True,
-                     "is_inf": True,
-                     },
-                "intra_ideal_complexity":
-                    {"y_label": r"Intra-cluster complexity of supremum $P_{\delta}$ partition",
-                     "legend": ["Supremum over all clusters", "Mean complexity over all clusters",
-                                "Infimum complexity over all clusters"],
-                     "is_sup": True,
-                     "is_inf": True,
-                     },
-                "inter_dist_complexity":
-                    {"y_label": r"Mean inter-cluster complexity over all partitions",
-                     "legend": ["Supremum over all partitions", "Mean complexity over all partitions"],
-                     "is_sup": True,
-                     "is_inf": False,
-                     },
-                "intra_dist_complexity":
-                    {"y_label": r"Mean intra-cluster complexity over all partitions",
-                     "legend": ["Mean complexity over all partitions", "Infimum over all partitions"],
-                     "is_sup": False,
-                     "is_inf": True,
-                     },
-            }
-            num_delta = np.size(type_target_dict["pw"]["part_complexity"], 1)
+            base_dict = return_dict_from_address(key_list, distance_metrics_store)
+            sub_array = base_dict["partition_array"]
+            num_delta = np.size(sub_array, 1)
             n_values = np.linspace(1, num_delta, num_delta)
-            for base_type in ["pw", "binary"]:
-                base_dict = type_target_dict[base_type]
-                if base_dict["execute"]:
-                    for data_type in type_info.keys():
-                        # pop-weighted and binary (if applicable)
-                        sub_array = base_dict[data_type]
-                        plot_legend = deepcopy(type_info[data_type]["legend"])
+            plot_legend = ["Supremum value over all partitions", "Mean value over all partitions"]
 
-                        # delta-partition complexity plot:
-                        y_val_inf = sub_array[0,:]
-                        y_val_mean = sub_array[1,:]
-                        y_val_sup = sub_array[2,:]
+            # delta-partition complexity plot:
+            y_val_inf = sub_array[0, :]
+            y_val_mean = sub_array[1, :]
+            y_val_sup = sub_array[2, :]
 
-                        fig = plt.figure()
-                        if type_info[data_type]["is_sup"]:
-                            plt.plot(n_values, y_val_sup, c='k', markersize=5, marker='o', mfc='white', mec='k')
-                        plt.plot(n_values, y_val_mean, c=[0.3, 0.3, 0.3], linewidth=1,
-                                 markersize=3, marker='o', mfc='white', mec='k', linestyle=':')
-                        if type_info[data_type]["is_inf"]:
-                            plt.plot(n_values, y_val_inf, c='k', markersize=4, marker='D', mfc='white', mec='k')
-                        plt.fill_between(n_values, y_val_inf, y_val_sup, alpha=0.2, color='grey',
-                                         label='_nolegend_')
+            fig = plt.figure()
+            plt.plot(n_values, y_val_sup, c='k', markersize=5, marker='o', mfc='white', mec='k')
+            plt.plot(n_values, y_val_mean, c=[0.3, 0.3, 0.3], linewidth=1,
+                     markersize=3, marker='o', mfc='white', mec='k', linestyle=':')
+            plt.fill_between(n_values, y_val_inf, y_val_sup, alpha=0.2, color='grey',
+                             label='_nolegend_')
 
-                        if data_type == "part_complexity":
-                            natural_delta = base_dict["part_minmax_delta"]  # delta with single best partition value
-                            target_height = base_dict["part_target"]  # above line may classify peaks for natural scale
-                            if target_height is not None:
-                                plt.axhline(y=target_height, color=[0.2, 0.2, 0.2], linestyle=':',
-                                            linewidth=1.5, label='_nolegend_')
-                            if natural_delta is not None:
-                                plt.axvline(x=natural_delta, color='k', linestyle='--', label='_nolegend_')
-                            if target_height is not None and natural_delta is not None:
-                                plt.plot([], [], ' ')
-                                plot_legend.append(r'$(\delta, P_{\delta})$ of peaks: ' + str([(x[0], float(
-                                    f'{"{:.2f}".format(x[1])}')) for x in base_dict["part_peak_spectrum"]]))
-
-                        plt.xlabel(r"$\delta$")
-                        plt.ylabel(type_info[data_type]["y_label"])
-                        plt.legend(plot_legend, framealpha=1.0)
-                        plt.ylim([0, 1.3])  # give space for the extensive legend
-                        print_name = path.replace('|', '_')
-                        file_path = f"{sim_path}/{step}/figures/complexity/{print_name}_{base_type}_{data_type}.png"
-                        print_and_close(fig, file_path)
-
-                    # delta-threshold internal complexity heatmap:
-                    if "internal_matrix" in base_dict:
-                        fig = plt.figure()
-                        output_matrix = np.transpose(base_dict["internal_matrix"])
-                        plt.imshow(output_matrix, cmap='Greys_r', origin='lower', aspect=1.5)
-                        plt.colorbar(fraction=0.022, pad=0.12)
-                        plt.clim(vmin=0, vmax=1)
-                        xlabel(r"$\delta$")
-                        ylabel("Intra-cluster complexity threshold")
-                        plt.xticks(list(range(0, np.size(output_matrix, 1), 10)),
-                                   list(range(1, np.size(output_matrix, 1) + 1, 10)))
-                        plt.yticks(ticks=[0, 4, 8, 12, 16, 20], labels=[0, 0.2, 0.4, 0.6, 0.8, 1])
-                        plt.tight_layout()
-                        print_name = path.replace('|', '_')
-                        file_path = f"{sim_path}/{step}/figures/complexity/{print_name}_{base_type}_internal.png"
-                        print_and_close(fig, file_path)
+            natural_delta = base_dict["best_partition_scale"]  # delta with single best partition value
+            plt.axvline(x=natural_delta, color='k', linestyle='--', label='_nolegend_')
+            plt.xlabel(r"$\delta$")
+            plt.ylabel(r"Partition value $P_{\delta}$")
+            plt.legend(plot_legend, framealpha=1.0)
+            plt.ylim([0, 1.05])
+            fig.gca().xaxis.get_major_locator().set_params(integer=True)  # force x-axis ticks to only be integers
+            print_name = path.replace('|', '_')
+            file_path = f"{sim_path}/{step}/figures/complexity/{print_name}_binary_partition.png"
+            # in the current version, we only partition for binary networks
+            print_and_close(fig, file_path)
     else:
         # If IS_PARTITION_ANALYSIS was false but IS_PLOT_DISTANCE_METRICS_LM was true, this routine will fail to find
         # anything, as the default partition outputs will be empty dictionaries without the identifying keys.
         print("Complexity analysis - no partition data found for printing spectra.")
         pass
 
+
 def complexity_plotting(distance_metrics_store, sim_path, step):
-    # While plot_distance_metrics_lm() will plot SAR and complexity dimension across the full range, we need this
-    # additional function to plot the dc spectrum and Delta_C_per_N.
+    # Plots the complexity_range spectrum of mean (over clusters initialised at every patch) size-normalised interior
+    # complexity of dynamically-constructed uniformity-maximising size-n clusters, against size n from 2 to N.
+    #
+    # Also plots the three difference spectra used to identify primary scale and alignment.
     list_of_key_paths = recursive_dict_search(nested_dict=distance_metrics_store,
                                               seek_contains_key="is_complexity_graphical",
                                               upper_key_path=None)
     if len(list_of_key_paths) > 0:
         # results found
-
         for path in list_of_key_paths:
             key_list = path.split("|")
             target_dict = return_dict_from_address(key_list, distance_metrics_store)
-            # now target_dict is the graphical_results dictionary
-            n_values = np.asarray(target_dict["n_vector"])
-
-            # plot the single and dual fitted power laws for complexity
-            plot_y = {}
-            if target_dict["is_single_fit_success"] == 1:
-                plot_y["single"] = target_dict["single_para"][0] * (n_values - 1) ** target_dict["single_para"][1]
-            if target_dict["is_dual_fit_success"] == 1:
-                p = target_dict["dual_para"]
-                plot_y["dual"] = np.exp(-p[0] * (n_values - 1)) * p[1] * (n_values - 1) ** p[3] + (
-                        1 - np.exp(-p[0] * (n_values - 1))) * (p[2] * (n_values - 1) ** p[4] + p[5])
-
-            for law_type in ["single", "dual"]:
-                if target_dict[f"is_{law_type}_fit_success"]:
-                    fig = plt.figure()
-                    plt.plot(n_values, plot_y[law_type], c='b')
-                    plt.scatter(n_values, np.asarray(target_dict["complexity_vector"]), c='r', s=5, edgecolors='k')
-                    plt.xlabel(r"$n$")
-                    plt.ylabel(r"$C(n)$")
-                    r_str = "{0:.5g}".format(target_dict[f"{law_type}_r_squared"])
-                    plt.legend((f'Fit: $R^{2}$ = {r_str}', 'Actual values'))
-                    print_name = path.replace('|', '_')
-                    file_path = f"{sim_path}/{step}/figures/complexity/{print_name}_{law_type}.png"
-                    print_and_close(fig, file_path)
-
-            # plot the spectral properties
-            y_label = [r"$\frac{\Delta C(n)}{\Delta n}$", r"$d_{c}$"]
-            s_e_val = [[0, len(n_values)-1], [3, len(n_values)]]  # range of acceptable values to plot
-            for _, y_key in enumerate(["delta_c_per_n", "dc_fit"]):
-                y_values = np.asarray(target_dict[y_key])
+            y_keys = ["complexity_range", "difference_low", "difference_best", "difference_high"]
+            y_label = {
+                "complexity_range": r"$C(n+1)$",
+                "difference_low": 'Mean complexity above - below',  # global
+                "difference_best": r"Per-cluster size-normalised complexity difference from $n$ to $n+1$",  # local_modified
+                "difference_high": r"Size-normalised complexity difference from $n$ to $n+1$",  # local
+            }
+            for key in y_keys:
+                n_values = np.arange(target_dict["raw_complexity_scale"])[1:]
+                c_values = np.asarray(target_dict[key])[1:]
                 fig = plt.figure()
-                plt.plot(n_values[s_e_val[_][0]:s_e_val[_][1]], y_values[s_e_val[_][0]:s_e_val[_][1]],
-                         c='b', markersize=5, marker='o', mfc='r', mec='k')
+                plt.plot(n_values, c_values, c='k', markersize=5, marker='o', mfc='white', mec='k')
                 plt.xlabel(r"$n$")
-                plt.ylabel(y_label[_])
+                plt.ylabel(y_label[key])
                 print_name = path.replace('|', '_')
-                file_path = f"{sim_path}/{step}/figures/complexity/{print_name}_{y_key}.png"
+                file_path = f"{sim_path}/{step}/figures/complexity/{print_name}_{key}.png"
                 print_and_close(fig, file_path)
+
 
 
 def plot_distance_metrics_lm(distance_metrics_store, sim_path, step):
