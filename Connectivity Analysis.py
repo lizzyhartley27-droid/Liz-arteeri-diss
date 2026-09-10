@@ -7,7 +7,7 @@ from statsmodels.tsa.stattools import adfuller
 # 1. Load your data
 try:
     # header=None tells pandas that your file has no column title at the top
-    df = pd.read_csv("/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/127/1999/data/species_global_ts_prey_population.csv", header=None)
+    df = pd.read_csv("/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/133/1999/data/species_global_ts_prey_population.csv", header=None)
 
     # Rename the single column to make the code clean
     df.columns = ['Overall_Count']
@@ -70,3 +70,11 @@ mean_population = df['Overall_Count'].tail(1000).mean()
 
 print("Mean population size over the last 1000 time steps:",
       mean_population)
+
+# Mainly used for checking if the two-value oscillation caused by the connectivity structure,
+# or if it is caused by the underlying population growth.
+print(df['Overall_Count'].tail(100).values)
+
+print(df['Overall_Count'].tail(100).unique())
+
+print(df['Overall_Count'].tail(100).value_counts())
