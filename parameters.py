@@ -139,7 +139,7 @@ master_para = {
             # attempting to respect the relative positioning of patches in order to preserve the graph_type topology
             # as best possible.
 
-            "LATTICE_GRAPH_CONNECTIVITY": 0.8, # 0.0
+            "LATTICE_GRAPH_CONNECTIVITY": 0.5, # 0.0
             "IS_LATTICE_INCLUDE_DIAGONALS": False,
             "IS_LATTICE_WRAPPED": True,  # should only be used for GRAPH_TYPE 'lattice' and GRAPH_LAYOUT 'grid'.
             "RANDOM_GRAPH_CONNECTIVITY": None,
