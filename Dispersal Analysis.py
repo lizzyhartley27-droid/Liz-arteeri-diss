@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the population data
-file_path = "/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/149/1999/data/species_global_ts_prey_population.csv"
+file_path = "/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/142/1999/data/species_global_ts_prey_population.csv"
 
 df = pd.read_csv(file_path, header=None)
 
@@ -18,6 +18,12 @@ minimum_population = df["Population"].min()
 
 maximum_population = df["Population"].max()
 
+standard_deviation = df["Population"].std()
+
+cv = standard_deviation / mean_population
+
+cv_percent = cv * 100
+
 population_range = maximum_population - minimum_population
 
 print(f"Maximum population size: {maximum_population:.4f}")
@@ -28,9 +34,15 @@ print(f"Mean population size: {mean_population:.4f}")
 
 print(f"Range population size: {population_range:.4f}")
 
+print(f"Standard deviation: {standard_deviation:.4f}")
+
+print(f"Coefficient of variation: {cv:.4f}")
+
+print(f"Coefficient of variation (%): {cv_percent:.2f}%")
+
 # PATCH OCCUPANCY
 
-file_path_2 = "/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/149/1999/data/species_global_ts_prey_patches_occupied.csv"
+file_path_2 = "/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/142/1999/data/species_global_ts_prey_patches_occupied.csv"
 
 df = pd.read_csv(file_path_2, header=None)
 
@@ -52,7 +64,7 @@ print(f"Mean occupancy size:{mean_occupancy: 4f}")
 
 # PROBABILITY OF EXTINCTION
 
-file_path_3 = "/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/149/1999/data/species_global_ts_prey_patches_extinct.csv"
+file_path_3 = "/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/142/1999/data/species_global_ts_prey_patches_extinct.csv"
 df = pd.read_csv(file_path_3, header=None)
 
 df.columns = ["Extinctions"]
@@ -78,3 +90,33 @@ print(f"Total extinction events: {total_extinctions:.0f}")
 print(f"Time steps analysed: {number_of_time_steps}")
 print(f"Extinction event rate: {extinction_rate:.6f}")
 print(f"Extinction event rate (%): {extinction_rate * 100:.4f}%")
+
+
+
+# Load recolonisation data
+file_path = "/Users/liz/Library/CloudStorage/OneDrive2-Personal/Desktop/arteeri-master/results/142/1999/data/species_global_ts_prey_patches_colonised.csv"
+
+df = pd.read_csv(file_path, header=None)
+df.columns = ["Recolonisations"]
+
+# Remove first 1000 transient time steps
+df = df.iloc[1000:].reset_index(drop=True)
+
+# Number of habitat patches
+total_patches = 64
+
+# Number of time steps analysed
+number_of_time_steps = len(df)
+
+# Total recolonisation events
+total_recolonisations = df["Recolonisations"].sum()
+
+# Recolonisation rate per patch per time step
+recolonisation_rate = total_recolonisations / (
+    total_patches * number_of_time_steps
+)
+
+print(f"Total recolonisation events: {total_recolonisations:.0f}")
+print(f"Time steps analysed: {number_of_time_steps}")
+print(f"Recolonisation rate: {recolonisation_rate:.6f}")
+print(f"Recolonisation rate (%): {recolonisation_rate * 100:.4f}%")
