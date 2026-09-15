@@ -33,7 +33,7 @@ master_para = {
 
             "MAX_CENTRALITY_MEASURE": 10,  # Max amount of NxN matrix multiplication when determining patch.centrality
             "ASSUMED_MAX_PATH_LENGTH": 3,  # used for shortcuts in rebuilding paths AND multiplying adjacency matrix!
-            # THIS VALUE NEEDS TO BE AT LEAST EQUAL TO THE MAXIMUM MAX_DISPERSAL_PATH_LENGTH ACROSS ALL SPECIES!!!
+            # THIS VALUE NEEDS TO BE AT LEAST TO THE MAXIMUM MAX_DISPERSAL_PATH_LENGTH ACROSS ALL SPECIES!!!
             # and IF YOU CHANGE THIS then "IS_LOAD_ADJ_VARIABLES" BELOW MUST BE "FALSE" AS WE NEED TO REBUILD THEM!!!
             #
             # Note that saving the adjacency variables does seem to be extremely slow in DEBUG mode.
@@ -55,7 +55,7 @@ master_para = {
             "HABITAT_TYPES": {
                 # Key (indexing) must be non-negative integers without gaps. Value can be any given name.
                 0: 'habitat_type_0',
-                #1: 'habitat_type_1',
+                1: 'habitat_type_1',
             },
             "GENERATED_SPEC": {
                 #
@@ -70,7 +70,7 @@ master_para = {
                     # If used, this needs to have keys from 0, ...,  total_possible_habitats, indexing lists with
                     # length equal to the total possible number of scores (i.e. the number of species)
                     "HABITAT_SCORES": {0: [1.0], #[1.0, 1.0, 0.5]
-                                       # 1: [1.0], #[0.5, 1.0, 0.25]
+                                       1: [1.0], #[0.5, 1.0, 0.25]
                                        },
                 },
                 "TRAVERSAL": {
@@ -78,7 +78,7 @@ master_para = {
                     "MIN_SCORE": None,
                     "MAX_SCORE": None,
                     "HABITAT_SCORES": {0: [1.0], #[1.0, 1.0, 1.0]
-                                       # 1: [1.0], #[1.0, 1.0, 1.0]
+                                       1: [1.0], #[1.0, 1.0, 1.0]
                                        },
                 },
             },
@@ -90,7 +90,7 @@ master_para = {
 
             # each must be present in the types dictionary, ordering not needed
             # THIS ALSO NEEDS TO BE SET BEFORE SPATIAL HABITAT GENERATION!
-            "INITIAL_HABITAT_SET": {0}, #{0, 1},
+            "INITIAL_HABITAT_SET": {0,1}, #{0, 1},
             # if the following is None then probabilities are treated as uniform when combined with auto-correlation
             "INITIAL_HABITAT_BASE_PROBABILITIES": None,  # this should be a vector of length equal the TOTAL set of
             # habitats - NOT just those included in the initial set (they should be assigned probability 0.0).
@@ -159,7 +159,7 @@ master_para = {
             #
             # Determine habitat type:
             "IS_HABITAT_PROBABILITY_REBALANCED": True,  # are habitat probabilities sequentially biased to recover?
-            "HABITAT_TYPE_MANUAL_ALL_SPEC": None, # should be None if we want to generate habitats by probability,
+            "HABITAT_TYPE_MANUAL_ALL_SPEC": [0]*32 + [1]*32, # should be None if we want to generate habitats by probability,
                 # otherwise a list of the habitat nums
             "HABITAT_SPATIAL_AUTO_CORRELATION": 0.8,  # in range [-1, 1], was 0.8
             "HABITAT_TYPE_MANUAL_OVERWRITE": None,  # set this to None or empty dict, unless you want
@@ -192,7 +192,7 @@ master_para = {
                 "PATCH_PROPERTY_NORMAL_SD": 0.1,
                 "HABITAT_NORMAL_DICT": {
                     0: {"mean": 0.5, "sd": 0.7},
-                    #1: {"mean": 0.5, "sd": 0.7},
+                    1: {"mean": 0.5, "sd": 0.7},
                 },
                 "CLIQUE_NORMAL_DICT": {},
                 "TREE_INITIAL_PATCH_VALUE": 0.0,
@@ -214,7 +214,7 @@ master_para = {
                 "PATCH_PROPERTY_NORMAL_SD": 0.0,
                 "HABITAT_NORMAL_DICT": {
                     0: {"mean": 0.5, "sd": 0.7},
-                    #1: {"mean": 0.5, "sd": 0.7},
+                    1: {"mean": 0.5, "sd": 0.7},
                 },
                 "CLIQUE_NORMAL_DICT": {},
                 "TREE_INITIAL_PATCH_VALUE": 0.0,
