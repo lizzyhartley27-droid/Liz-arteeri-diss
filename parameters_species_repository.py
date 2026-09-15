@@ -435,7 +435,7 @@ ARTEMIS_SAMPLE_MASTER = {
                 "DISPERSAL_MOBILITY": {
                     # THIS IS REDUNDANT FOR STEP_POLY DISPERSAL IF CF_LISTS SCALED
                     "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                    "constant_value": 0.5, # 0.025
+                    "constant_value": 0.25, # 0.025
                     "period": None,
                     "amplitude": None,
                     "phase_shift": None,
