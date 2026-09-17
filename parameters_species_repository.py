@@ -488,6 +488,7 @@ ARTEMIS_SAMPLE_MASTER = {
         "PERTURBATION_PARA": None,
     },
 
+
     #"predator": {
         #"CORE_PARA":{
             #"MINIMUM_POPULATION_SIZE": 0.0001,
@@ -670,8 +671,8 @@ ARTEMIS_SAMPLE_MASTER = {
                 #},
                 #"ALWAYS_MOVE_WITH_MINIMUM": False,  # this should certainly be false if using stochastic_binomial
                 #"SS_DISPERSAL_PENALTY": 0.0,  # this is a fraction of movement that dies/never arrives.
-                # It can overwrite the system-wide general value in pop_dyn_para but ONLY IF IT IS LARGER!
-                #"MINIMUM_LINK_STRENGTH_DISPERSAL": {
+                 #It can overwrite the system-wide general value in pop_dyn_para but ONLY IF IT IS LARGER!
+                 #"MINIMUM_LINK_STRENGTH_DISPERSAL": {
                     #"type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
                     #"constant_value": 0.01,
                     #"period": None,
@@ -696,45 +697,45 @@ ARTEMIS_SAMPLE_MASTER = {
                     #"vector_imp": None,  # { 0 : value_0, ... , lower_time_limit_N : value_N }
                     #"logistic_initial": None,  # initial value of this parameter (WILL BE RE-SCALED BY THE MAXIMUM)
                     #"logistic_r": None,  # r-value of the logistic map to generate the time-series
-                #    "logistic_max": None,  # theoretical maximum value of this parameter, to re-scale all to [0, 1]
+                    #"logistic_max": None,  # theoretical maximum value of this parameter, to re-scale all to [0, 1]
                 #},
-                # Is there a preference for permitted movement direction? 1.0 = ONLY move up, -1.0 = ONLY move down.
+                 # Is there a preference for permitted movement direction? 1.0 = ONLY move up, -1.0 = ONLY move down.
                 #"DISPERSAL_DIRECTION": {  # This should be a numerical value from [-1.0, 1.0]
-                #    "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                #    "constant_value": 0.0,
-                #    "period": None,
-                #    "amplitude": None,
-                #    "phase_shift": None,
-                #    "vertical_shift": None,
-                #    "vector_exp": None,  # [value_0, value_1, ..., value_period]
-                #    "vector_imp": None,  # { 0 : value_0, ... , lower_time_limit_N : value_N }
-                #    "logistic_initial": None,  # initial value of this parameter (WILL BE RE-SCALED BY THE MAXIMUM)
-                #    "logistic_r": None,  # r-value of the logistic map to generate the time-series
-                #    "logistic_max": None,  # theoretical maximum value of this parameter, to re-scale all to [0, 1]
+                    #"type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
+                    #"constant_value": 0.0,
+                    #"period": None,
+                    #"amplitude": None,
+                    #"phase_shift": None,
+                    #"vertical_shift": None,
+                    #"vector_exp": None,  # [value_0, value_1, ..., value_period]
+                    #"vector_imp": None,  # { 0 : value_0, ... , lower_time_limit_N : value_N }
+                    #"logistic_initial": None,  # initial value of this parameter (WILL BE RE-SCALED BY THE MAXIMUM)
+                    #"logistic_r": None,  # r-value of the logistic map to generate the time-series
+                    #"logistic_max": None,  # theoretical maximum value of this parameter, to re-scale all to [0, 1]
                 #},
                 #"IS_DISPERSAL_PATH_RESTRICTED": True,
                 #"MAX_DISPERSAL_PATH_LENGTH": {
-                #    "type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
-                #    "constant_value": 1,
-                #    "period": None,
-                #    "amplitude": None,
-                #    "phase_shift": None,
-                #    "vertical_shift": None,
-                #    "vector_exp": None,  # [value_0, value_1, ..., value_period]
-                #    "vector_imp": None,  # { 0 : value_0, ... , lower_time_limit_N : value_N }
-                #    "logistic_initial": None,  # initial value of this parameter (WILL BE RE-SCALED BY THE MAXIMUM)
-                #    "logistic_r": None,  # r-value of the logistic map to generate the time-series
-                #    "logistic_max": None,  # theoretical maximum value of this parameter, to re-scale all to [0, 1]
+                    #"type": 'constant',  # {'constant', 'sine', 'vector_exp', 'vector_imp', 'logistic_map'}
+                    #"constant_value": 1,
+                    #"period": None,
+                    #"amplitude": None,
+                    #"phase_shift": None,
+                    #"vertical_shift": None,
+                    #"vector_exp": None,  # [value_0, value_1, ..., value_period]
+                    #"vector_imp": None,  # { 0 : value_0, ... , lower_time_limit_N : value_N }
+                    #"logistic_initial": None,  # initial value of this parameter (WILL BE RE-SCALED BY THE MAXIMUM)
+                    #"logistic_r": None,  # r-value of the logistic map to generate the time-series
+                    #"logistic_max": None,  # theoretical maximum value of this parameter, to re-scale all to [0, 1]
                 #},
                 #"BINOMIAL_EXTRA_INDIVIDUAL": 0.0,
                 #"COEFFICIENTS_LISTS": {
-                #    "type": None,  # {'constant', 'vector_exp', 'vector_imp'}
-                #    "constant_value": None,
-                #    "period": None,
-                #    "vector_exp": None,  # [value_0, value_1, ..., value_period]
-                #    "vector_imp": None,  # { 0 : value_0, ... , lower_time_limit_N : value_N }
+                    #"type": None,  # {'constant', 'vector_exp', 'vector_imp'}
+                    #"constant_value": None,
+                    #"period": None,
+                    #"vector_exp": None,  # [value_0, value_1, ..., value_period]
+                    #   "vector_imp": None,  # { 0 : value_0, ... , lower_time_limit_N : value_N }
                 #},
-            #},
+                #   },
         #"IS_PURE_DIRECT_IMPACT": False,  # direct impact but not from any species
         #"PURE_DIRECT_IMPACT_PARA":
             #{
@@ -743,34 +744,34 @@ ARTEMIS_SAMPLE_MASTER = {
                 #"PROBABILITY": None,
                 #"DIRECT_VECTOR": [],
                 #"ANNUAL_OFFSET": {
-                #    "IS_DIRECT_OFFSET": False,  # is there an annual offset to early/late seasonal
+                    #"IS_DIRECT_OFFSET": False,  # is there an annual offset to early/late seasonal
                     # behaviour, for example to delay mating season or late spring etc.
-                #    "ANNUAL_DURATION": None,  # This is how long each year is
-                #    "DIRECT_OFFSET_SPECIES": [],  # list - each entry is the annual offset. Can be stochastic!
-                #    "IS_DIRECT_OFFSET_LOCAL": False,  # is there an annual offset that varies by patch?
-                #    "DIRECT_OFFSET_LOCAL": [],  # list of lists - each entry is list of annual offsets per patch
-                #},
+                    #"ANNUAL_DURATION": None,  # This is how long each year is
+                    #"DIRECT_OFFSET_SPECIES": [],  # list - each entry is the annual offset. Can be stochastic!
+                    #"IS_DIRECT_OFFSET_LOCAL": False,  # is there an annual offset that varies by patch?
+                    #"DIRECT_OFFSET_LOCAL": [],  # list of lists - each entry is list of annual offsets per patch
+                    #   },
             #},
-        #"DIRECT_IMPACT_ON_ME": {},  # dictionary of species names (including self) and linear impact scores
+        #"DIRECT_IMPACT_ON_ME": {'prey'},  # dictionary of species names (including self) and linear impact scores
         #"IS_PERTURBS_ENVIRONMENT": False,  # does this species induce perturbations in the physical environment?
         #"PERTURBATION_PARA": {
             #"TO_IMPACT": [],  # list containing some of 'same', 'adjacent', 'xy-adjacent'
             #"IMPLEMENTATION_PROBABILITY_COEFFICIENTS": {
                 # for each potentially-impacted patch, occurs with probability = X_0*chi(x) + X_1*x + X_2*x^2 + X_3*x^3
                 # dependent upon the density, that is x = local population / carrying_capacity
-            #    "SAME": [0, 0, 0, 0],
-            #    "ADJACENT": [0, 0, 0, 0],
-            #    "XY_ADJACENT": [0, 0, 0, 0],
+                #"SAME": [0, 0, 0, 0],
+                #"ADJACENT": [0, 0, 0, 0],
+                #"XY_ADJACENT": [0, 0, 0, 0],
             #},
             #"PERTURBATION": {
-            #    "IS_REMOVAL": False,
-            #    "IS_HABITAT_TYPE_CHANGE": False,
-            #    "HABITAT_TYPE_NUM_TO_CHANGE_TO": None,  # integer habitat type number
-            #    "IS_QUALITY_CHANGE": False,
-            #    "RELATIVE_QUALITY_CHANGE": None,  # ± float amount?
-            #    "IS_ADJACENCY_CHANGE": False,
-            #     "ABSOLUTE_ADJACENCY_CHANGE": None,  # 1 or 0
+                #"IS_REMOVAL": False,
+                #"IS_HABITAT_TYPE_CHANGE": False,
+                #"HABITAT_TYPE_NUM_TO_CHANGE_TO": None,  # integer habitat type number
+                #"IS_QUALITY_CHANGE": False,
+                #"RELATIVE_QUALITY_CHANGE": None,  # ± float amount?
+                #"IS_ADJACENCY_CHANGE": False,
+                 #"ABSOLUTE_ADJACENCY_CHANGE": None,  # 1 or 0
             #},
         #},
     #},
-}
+ }
