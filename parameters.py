@@ -326,37 +326,37 @@ master_para = {
             "IS_OUTPUT_DATAFILES": False,
             # NO MORE THAN ONE PERTURBATION ARCHETYPE SHOULD BE ENACTED IN A GIVEN TIME-STEP - AS THEY WILL NOT BE
             # SIMULTANEOUS AND AS SYSTEM_STATE.PERTURBATION_HISTORY IS A DICTIONARY AND ONLY HOLDS ONE VALUE PER STEP!
-            "PERT_STEP_DICTIONARY": {1000:'a'},  # did have it at {30:a}, {101:'a'},  # {100 * x + 50: 'b' for x in range(100)}
+            "PERT_STEP_DICTIONARY": {},  # did have it at {30:a}, {101:'a'},  # {100 * x + 50: 'b' for x in range(100)}
             # e.g. {x: 'a' for x in range(2000)} so that pert type 'a' occurs at step x
-            "PERT_ARCHETYPE_DICTIONARY": {
-                "a": {
-                    "perturbation_type": "patch_perturbation",
-                    "perturbation_subtype": "remove_patch",
+            #"PERT_ARCHETYPE_DICTIONARY": {
+                #"a": {
+                    #"perturbation_type": "patch_perturbation",
+                    #"perturbation_subtype": "remove_patch",
                     # "change_habitat" or "change_parameter" or "remove_patch" or ""change_adjacency"
-                    "patch_list_overwrite": None,  # list if desired
-                    "patches_affected": [{"num_patches": 4,
-                                          "habitat_nums_permitted": None,  # if None then all by default
-                                          "initial": ["random"],
-                                          "arch_type": "random",
-                                          }],
-                    "is_pairs": False,
-                    "habitat_nums_to_change_to": None,
-                    "parameter_change": 0.8,  # numerical value
-                    "parameter_change_type": "relative_multiply",  # 'absolute', 'relative_add', or 'relative_multiply'
-                    "parameter_change_attr": "quality, size",  # 'quality' or 'size'
-                    "adjacency_change": None,
-                    "is_reserves_overwrite": False,
-                    "clusters_must_be_separated": True,
-                    "proximity_to_previous": 0,  # 0, 1, 2, 3 - will not apply to removal perturbations
+                    #"patch_list_overwrite": None,  # list if desired
+                    #"patches_affected": [{"num_patches": 4,
+                                          #"habitat_nums_permitted": None,  # if None then all by default
+                                          #"initial": ["random"],
+                                          #"arch_type": "random",
+                                          #}],
+                    #"is_pairs": False,
+                    #"habitat_nums_to_change_to": None,
+                    #"parameter_change": 0.8,  # numerical value
+                    #"parameter_change_type": "relative_multiply",  # 'absolute', 'relative_add', or 'relative_multiply'
+                    #"parameter_change_attr": "quality, size",  # 'quality' or 'size'
+                    #"adjacency_change": None,
+                    #"is_reserves_overwrite": False,
+                    #"clusters_must_be_separated": True,
+                    #"proximity_to_previous": 0,  # 0, 1, 2, 3 - will not apply to removal perturbations
                     # [relative_weight, alpha, beta, gamma] or None - preference of total distance from last pert.
-                    "prev_weighting": [1, 1, 5, 0],
+                    #"prev_weighting": [1, 1, 5, 0],
                     # [relative_weight, alpha, beta, gamma] or None - preference function of previously pert. patches
-                    "all_weighting": None,
-                    "rebuild_all_patches": False,
-                    "contagion_probability": 0.0, # did have 0.2  # either float or list of length equal to the number of habitats
-                    "contagion_delay": 0,  # Must be >0 for pert to take effect.
-                    "contagion_cooldown": 0,  # Prevents immediate reinfection if >=2*delay.
-                },
+                    #"all_weighting": None,
+                    #"rebuild_all_patches": False,
+                    #"contagion_probability": 0.0, # did have 0.2  # either float or list of length equal to the number of habitats
+                    #"contagion_delay": 0,  # Must be >0 for pert to take effect.
+                    #"contagion_cooldown": 0,  # Prevents immediate reinfection if >=2*delay.
+                #},
 
             #   "b": {
             #        "perturbation_type": "population_perturbation",
@@ -397,8 +397,8 @@ master_para = {
         {
             x: ARTEMIS_SAMPLE_MASTER[x] for x in ARTEMIS_SAMPLE_MASTER
         },
-        },
-}
+        }
+#}
 
 # "PERT_ARCHETYPE_DICTIONARY": {
 #     "a": {
